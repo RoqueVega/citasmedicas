@@ -1,4 +1,4 @@
-@extends('disenos_base.index')
+@extends('layouts.app') 
 
 @section('title', 'Agenda de Citas')
 
@@ -12,7 +12,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <h2 class="text-center mb-2">Agenda de citas</h2>
+                            <h2 class="text-center fs-2 mb-5">Agenda de citas</h2>
                             <table class="table">
                                 <thead>
                                     <tr>

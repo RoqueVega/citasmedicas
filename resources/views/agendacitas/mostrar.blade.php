@@ -1,4 +1,4 @@
-@extends('disenos_base.index')
+@extends('layouts.app') 
 
 @section('title', 'Detalle de la cita')
 
@@ -13,7 +13,7 @@
           <div class="card">
             <div class="card-body">
               @include('disenos_base.alertas_session')
-              <h2 class="text-center mb-5">Detalle de la Cita</h2>
+              <h2 class="text-center fs-2 mb-5">Detalle de la Cita</h2>
               <div class="col-md-12" id="alertaLocal">
               </div>
               <div class="row">

@@ -1,4 +1,4 @@
-@extends('disenos_base.index')
+@extends('layouts.app') 
 
 @section('title', 'Catálogo de Médicos')
 
@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="">Inicio</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Inicio</a></li>
                         <li class="breadcrumb-item active"><a href="{{ route('medicos.index') }}">Médicos</a></li>
                     </ol>
                 </div>
@@ -27,7 +27,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <h2 class="text-center mb-2">Catálogo de Médicos</h2>
+                            <h2 class="text-center fs-2 mb-5">Catálogo de Médicos</h2>
                             <table class="table">
                                 <thead>
                                     <tr>

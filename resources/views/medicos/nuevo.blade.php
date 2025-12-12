@@ -1,4 +1,4 @@
-@extends('disenos_base.index')
+@extends('layouts.app') 
 
 @section('title', 'Catálogo de Médicos')
 
@@ -31,7 +31,7 @@
             <div class="card-body">
               @include('disenos_base.alertas')
               @include('disenos_base.alertas_session')
-              <h2 class="text-center mb-5">
+              <h2 class="text-center fs-2 mb-5">
                 @if(@$medico->id)Editar @else Crear @endif Médico</h2>
               <div class="col-md-12" id="alertaLocal">
               </div>

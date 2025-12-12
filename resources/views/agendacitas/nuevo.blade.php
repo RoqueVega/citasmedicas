@@ -1,4 +1,4 @@
-@extends('disenos_base.index')
+@extends('layouts.app') 
 
 @section('title', 'Programación de la cita')
 
@@ -11,7 +11,7 @@
             <div class="card-body">
               @include('disenos_base.alertas')
               @include('disenos_base.alertas_session')
-              <h2 class="text-center mb-5">Programar Cita</h2>
+              <h2 class="text-center fs-2 mb-5">Programar Cita</h2>
               <div class="col-md-12" id="alertaLocal">
               </div>
               <form class="row" action="{{ route('agenda.citas.guardar') }}" method="POST" autocomplete="off" onsubmit="return validarFormulario()">
