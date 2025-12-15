@@ -24,6 +24,11 @@ class Medico extends Model
     {
         return $this->belongsToMany(Profesion::class, 'medicos_profesiones');
     }
+
+    public function agendaCitas()
+    {
+        return $this->hasMany(AgendaCita::class, 'medico_id');
+    }
     
     public static function medicosDisponibles()
     {

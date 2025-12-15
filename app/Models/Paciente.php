@@ -20,6 +20,11 @@ class Paciente extends Model
         return $this->belongsTo(Genero::class);
     }
 
+    public function agendaCitas()
+    {
+        return $this->hasMany(AgendaCita::class, 'paciente_id');
+    }
+
     public static function pacientesDisponibles()
     {
         $pacientes = Paciente::get();

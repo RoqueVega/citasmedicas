@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('medicos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('genero_id');
-            $table->string('nombre');
-            $table->string('apellido_paterno');
-            $table->string('apellido_materno');
+            $table->string('nombre', 50);
+            $table->string('apellido_paterno', 50);
+            $table->string('apellido_materno', 50);
             $table->date('fecha_nacimiento');
             $table->unsignedTinyInteger('activo');
             $table->softDeletes();

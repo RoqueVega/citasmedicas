@@ -4,48 +4,45 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MedicoController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\AgendaCitaController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     //return view('login');
     return view('welcome');
 });
+Route::get("/access-login", [UserController::class,"accessLogin"])->name("access.login");
+Route::get("/access-register", [UserController::class,"accessRegister"])->name("access.register");
 
-Route::prefix("medicos")->group(function(){
-    Route::get("/", [MedicoController::class,"index"])->name("medicos.index");
-    Route::get("/nuevo", [MedicoController::class,"nuevo"])->name("medicos.nuevo");
-    Route::post("/guardar", [MedicoController::class,"guardar"])->name("medicos.guardar");
-    Route::get("/editar/{id}", [MedicoController::class,"editar"])->name("medicos.editar");
-    Route::put("/actualizar/{id}", [MedicoController::class,"actualizar"])->name("medicos.actualizar");
-    Route::delete("/eliminar/{id}", [MedicoController::class,"eliminar"])->name("medicos.eliminar");
-    Route::post("/profesiones", [MedicoController::class,"obtenerMedicoProfesion"])->name("medicos.profesion");
-});
-
-Route::prefix("pacientes")->group(function(){
-    Route::get("/", [PacienteController::class,"index"])->name("pacientes.index");
-    Route::get("/nuevo", [PacienteController::class,"nuevo"])->name("pacientes.nuevo");
-    Route::post("/guardar", [PacienteController::class,"guardar"])->name("pacientes.guardar");
-    Route::get("/editar/{id}", [PacienteController::class,"editar"])->name("pacientes.editar");
-    Route::put("/actualizar/{id}", [PacienteController::class,"actualizar"])->name("pacientes.actualizar");
-    Route::delete("/eliminar/{id}", [PacienteController::class,"eliminar"])->name("pacientes.eliminar");
-    Route::post("/obtenerPacientes", [PacienteController::class,"obtenerPacientes"])->name("pacientes.busqueda");
-});
-
-Route::prefix("agendacitas")->group(function(){
-    Route::get("/", [AgendaCitaController::class,"index"])->name("agenda.citas.index");
-    Route::get("/nuevo", [AgendaCitaController::class,"nuevo"])->name("agenda.citas.nuevo");
-    Route::post("/guardar", [AgendaCitaController::class,"guardar"])->name("agenda.citas.guardar");
-    Route::get("/mostrar/{id}", [AgendaCitaController::class,"mostrar"])->name("agenda.citas.mostrar");
-    Route::delete("/eliminar/{id}", [AgendaCitaController::class,"eliminar"])->name("agenda.citas.eliminar");
-});
-
-/*
-$router->group(['middleware' => 'auth'], function() use ($router){
-    $router->group(['prefix' => 'branches'], function() use ($router){
-        $router->get('/', [BranchController::class,"index"])->name("branches.index");
-        $router->get('/create', [BranchController::class,"create"])->name("branches.create");
-        $router->post('/store', [BranchController::class,"store"])->name("branches.store");
-        $router->get('/edit/{id}', [BranchController::class,"edit"])->name("branches.edit");
-        $router->put('/update/{id}', [BranchController::class,"update"])->name("branches.update");
-        $router->delete('/destroy/{id}', [BranchController::class,"destroy"])->name("branches.destroy");
+// SIN TOKEN JWT 
+if(env('TEST_MOD_API', 0) == 0){
+    $router->group(['prefix' => 'medicos'], function() use ($router){
+        $router->get("/", [MedicoController::class,"index"])->middleware(["addHeaders"])->name("medicos.index");
+        $router->get("/nuevo", [MedicoController::class,"nuevo"])->middleware(["addHeaders"])->name("medicos.nuevo");
+        $router->post("/guardar", [MedicoController::class,"guardar"])->middleware(["addHeaders"])->name("medicos.guardar");
+        $router->get("/editar/{id}", [MedicoController::class,"editar"])->middleware(["addHeaders"])->name("medicos.editar");
+        $router->put("/actualizar/{id}", [MedicoController::class,"actualizar"])->middleware(["addHeaders"])->name("medicos.actualizar");
+        $router->delete("/eliminar/{id}", [MedicoController::class,"eliminar"])->middleware(["addHeaders"])->name("medicos.eliminar");
+        $router->post("/profesiones", [MedicoController::class,"obtenerMedicoProfesion"])->middleware(["addHeaders"])->name("medicos.profesion");
     });
-});*/
+
+
+    $router->group(['prefix' => 'pacientes'], function() use ($router){
+        $router->get("/", [PacienteController::class,"index"])->middleware(["addHeaders"])->name("pacientes.index");
+        $router->get("/nuevo", [PacienteController::class,"nuevo"])->middleware(["addHeaders"])->name("pacientes.nuevo");
+        $router->post("/guardar", [PacienteController::class,"guardar"])->middleware(["addHeaders"])->name("pacientes.guardar");
+        $router->get("/editar/{id}", [PacienteController::class,"editar"])->middleware(["addHeaders"])->name("pacientes.editar");
+        $router->put("/actualizar/{id}", [PacienteController::class,"actualizar"])->middleware(["addHeaders"])->name("pacientes.actualizar");
+        $router->delete("/eliminar/{id}", [PacienteController::class,"eliminar"])->middleware(["addHeaders"])->name("pacientes.eliminar");
+        $router->post("/obtenerPacientes", [PacienteController::class,"obtenerPacientes"])->middleware(["addHeaders"])->name("pacientes.busqueda");
+    });
+
+
+    $router->group(['prefix' => 'agendacitas'], function() use ($router){
+        $router->get("/", [AgendaCitaController::class,"index"])->middleware(["addHeaders"])->name("agenda.citas.index");
+        $router->get("/nuevo", [AgendaCitaController::class,"nuevo"])->middleware(["addHeaders"])->name("agenda.citas.nuevo");
+        $router->post("/guardar", [AgendaCitaController::class,"guardar"])->middleware(["addHeaders"])->name("agenda.citas.guardar");
+        $router->get("/mostrar/{id}", [AgendaCitaController::class,"mostrar"])->middleware(["addHeaders"])->name("agenda.citas.mostrar");
+        $router->delete("/eliminar/{id}", [AgendaCitaController::class,"eliminar"])->middleware(["addHeaders"])->name("agenda.citas.eliminar");
+    });
+}
