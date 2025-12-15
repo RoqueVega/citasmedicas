@@ -1,5 +1,5 @@
 <!-- Mensajes de validación -->
-@if($errors->any()) 
+@if(@$errors && $errors->any()) 
 <div id="mensajeAlerta" class="alert alert-warning alert-dismissible fade show" role="alert">
     <ul>
     @foreach($errors->all() as $error)

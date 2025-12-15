@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('pacientes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('genero_id');
-            $table->string('nombre');
-            $table->string('apellido_paterno');
-            $table->string('apellido_materno');
+            $table->string('nombre', 50);
+            $table->string('apellido_paterno', 50);
+            $table->string('apellido_materno', 50);
             $table->date('fecha_nacimiento');
             $table->string('telefono', 10);
-            $table->string('correo_electronico')->nullable();
+            $table->string('correo_electronico', 100)->nullable();
             $table->unsignedTinyInteger('activo');
             $table->softDeletes();
             $table->timestamps();

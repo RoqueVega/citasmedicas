@@ -38,9 +38,9 @@ class MedicoController extends Controller
     public function guardar(Request $request)
     {
         $request->validate([
-            'nombre' => 'required|max:50',
-            'apellidoPaterno' => 'required|max:50',
-            'apellidoMaterno' => 'required|max:50',
+            'nombre' => 'required|min:3|max:50',
+            'apellidoPaterno' => 'required|min:3|max:50',
+            'apellidoMaterno' => 'required|min:3|max:50',
             'idGenero' => 'required',
             'fechaNacimiento' => 'required|date',
             'activo' => 'required|in:0,1',
@@ -73,18 +73,23 @@ class MedicoController extends Controller
             return back()->withInput();
         }
 
-        $medico = new Medico();
-        $medico->genero_id = $request->idGenero;
-        $medico->nombre = $request->nombre;
-        $medico->apellido_paterno = $request->apellidoPaterno;
-        $medico->apellido_materno = $request->apellidoMaterno;
-        $medico->fecha_nacimiento = $request->fechaNacimiento;
-        $medico->activo = $request->activo;
-        $medico->save();
-        $medico->profesiones()->sync($request->profesiones);
+        try {
+            $medico = new Medico();
+            $medico->genero_id = $request->idGenero;
+            $medico->nombre = $request->nombre;
+            $medico->apellido_paterno = $request->apellidoPaterno;
+            $medico->apellido_materno = $request->apellidoMaterno;
+            $medico->fecha_nacimieno = $request->fechaNacimiento;
+            $medico->activo = $request->activo;
+            $medico->save();
+            $medico->profesiones()->sync($request->profesiones);
 
-        $this->alerta("Se guardó correctamente.", "success");
-        return redirect()->route("medicos.index");
+            $this->alerta("Se guardó correctamente.", "success");
+            return redirect()->route("medicos.index");
+        } catch (\Throwable $th) {
+            $this->alerta("Se presento un error, favor de intentar nuevamente.", "warning");
+            return back()->withInput();
+        }
     }
 
     /**
@@ -113,9 +118,9 @@ class MedicoController extends Controller
     public function actualizar(Request $request, string $id)
     {
         $request->validate([
-            'nombre' => 'required|max:50',
-            'apellidoPaterno' => 'required|max:50',
-            'apellidoMaterno' => 'required|max:50',
+            'nombre' => 'required|min:3|max:50',
+            'apellidoPaterno' => 'required|min:3|max:50',
+            'apellidoMaterno' => 'required|min:3|max:50',
             'idGenero' => 'required',
             'fechaNacimiento' => 'required|date',
             'activo' => 'required|in:0,1',
@@ -170,9 +175,13 @@ class MedicoController extends Controller
         if(is_null($medico)){
             $this->alerta("Ocurrió un error al encontrar al médico. Favor de intentar de nuevo.", "warning");
         }else{
-            $medico->delete();
-            $medico->profesiones()->sync([]);
-            $this->alerta("Se eliminó correctamente.", "danger");
+            if(COUNT($medico->agendaCitas) > 0){
+                $this->alerta("No puede eliminar al médico, ya que tiene citas activas.", "warning");
+            }else{
+                $medico->delete();
+                $medico->profesiones()->sync([]);
+                $this->alerta("Se eliminó correctamente.", "danger");
+            }
         }
         return redirect()->route("medicos.index");
     }

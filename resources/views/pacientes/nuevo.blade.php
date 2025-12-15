@@ -60,7 +60,7 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="txtCorreoElectronico" class="form-label">Correo electrónico:</label>
-                  <input type="email" class="form-control" name="correoElectronico" id="txtCorreoElectronico" placeholder="paciente@correo.com" value="{{ old('correoElectronico') ?? @$paciente->correo_electronico ?? '' }}">
+                  <input type="email" class="form-control" name="correoElectronico" id="txtCorreoElectronico" placeholder="paciente@correo.com" maxlength="100" value="{{ old('correoElectronico') ?? @$paciente->correo_electronico ?? '' }}">
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="dtFechaNacimiento" class="form-label">Fecha de Nacimiento:</label>
@@ -105,7 +105,7 @@
       var cmbGenero = document.getElementById('cmbGenero').value;
       var dtFechaNacimiento = document.getElementById('dtFechaNacimiento').value;
       var txtTelefono = document.getElementById('txtTelefono').value;
-      //var txtCorreoElectronico = document.getElementById('txtCorreoElectronico').value;
+      var txtCorreoElectronico = document.getElementById('txtCorreoElectronico').value;
       var chkEstadoActivo = document.getElementById('chkEstadoActivo');
       var chkEstadoInactivo = document.getElementById('chkEstadoInactivo');
       var send = true;
@@ -133,6 +133,10 @@
       }
       if(txtTelefono == '' || txtTelefono.length != 10){
         data.push("Teléfono Obligatorio, y debe de ser una teléfono valido.");
+        send = false;
+      }
+      if(txtCorreoElectronico != '' && txtCorreoElectronico.length > 100){ 
+        data.push("Correo electrónico debe de ser menor a 100 caracteres.");
         send = false;
       }
       if(!chkEstadoActivo.checked && !chkEstadoInactivo.checked){

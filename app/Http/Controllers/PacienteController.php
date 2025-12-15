@@ -40,13 +40,13 @@ class PacienteController extends Controller
     public function guardar(Request $request)
     {
         $request->validate([
-            'nombre' => 'required|max:50',
-            'apellidoPaterno' => 'required|max:50',
-            'apellidoMaterno' => 'required|max:50',
+            'nombre' => 'required|min:3|max:50',
+            'apellidoPaterno' => 'required|min:3|max:50',
+            'apellidoMaterno' => 'required|min:3|max:50',
             'telefono' => 'required|min:10|max:10',
             'idGenero' => 'required',
             'fechaNacimiento' => 'required|date',
-            'correoElectronico' => 'nullable|email',
+            'correoElectronico' => 'nullable|email|max:100',
             'activo' => 'required|in:0,1'
         ],
         [
@@ -110,13 +110,13 @@ class PacienteController extends Controller
     public function actualizar(Request $request, string $id)
     {
         $request->validate([
-            'nombre' => 'required|max:50',
-            'apellidoPaterno' => 'required|max:50',
-            'apellidoMaterno' => 'required|max:50',
+            'nombre' => 'required|min:3|max:50',
+            'apellidoPaterno' => 'required|min:3|max:50',
+            'apellidoMaterno' => 'required|min:3|max:50',
             'telefono' => 'required|min:10|max:10',
             'idGenero' => 'required',
             'fechaNacimiento' => 'required|date',
-            'correoElectronico' => 'nullable|email',
+            'correoElectronico' => 'nullable|email|max:100',
             'activo' => 'required|in:0,1'
         ],
         [
@@ -169,8 +169,12 @@ class PacienteController extends Controller
         if(is_null($paciente)){
             $this->alerta("Ocurrió un error al encontrar al paciente. Favor de intentar de nuevo.", "warning");
         }else{
-            $paciente->delete();
-            $this->alerta("Se eliminó correctamente.", "danger");
+            if(COUNT($paciente->agendaCitas) > 0){
+                $this->alerta("No puede eliminar al médico, ya que tiene citas activas.", "warning");
+            }else{
+                $paciente->delete();
+                $this->alerta("Se eliminó correctamente.", "danger");
+            }
         }
         return redirect()->route("pacientes.index");
     }
